@@ -70,7 +70,7 @@ Magic3[2] = AA3
 print("\nThe magic number for the new square is:", IzM(Magic3))
 
 # Subtracting a value to whole array
-allsub = input("\nInput a number to mutlpily to every value of the array:")
+allsub = input("\nInput a number to subtract to every value of the array:")
 allsub = int(allsub)
 
 BB1 = []
@@ -93,7 +93,7 @@ Magic3[2] = BB3
 print("\nThe magic number for the new square is:", IzM(Magic3))
 
 # Multiplying a value to whole array
-allmult = input("\nInput a number to subtract to every value of the array:")
+allmult = input("\nInput a number to multiply to every value of the array:")
 allmult = int(allmult)
 
 CC1 = []
