@@ -1,0 +1,44 @@
+import math
+import random
+
+
+#def shuffle(arr):
+
+#def create(arr):
+  
+#def isMagic(arr):
+  
+usr = input("Please enter a prime number between 5 and 19:") 
+usr = int(usr)
+pri = 0
+num = []
+M1 = []
+
+# Validating Input
+if 4 < usr < 20:
+  for n in range(usr):
+    n = n +1
+    if (usr %n) == 0:
+      pri = pri + 1
+  if pri != 2:
+    print("That is not a prime number between 5 and 19!")
+else: 
+  print("You did not input a valid input...")
+
+# Generating random array
+ while True:
+    for x in range(usr):  
+      rand = random.randint(1,x+1)
+      if rand in num:
+        pass
+      else:
+        num.append(rand)
+    if len(num) == (usr):
+      break
+
+
+for 
+  for num in range(len(num)):
+    x = ((num - 2) % 7)
+    nln = a[x]
+    M1.append(nln)
