@@ -1,11 +1,30 @@
-# Importing Libraries
 import math
 import random
 
-# Functions
-def create1(N, M1):
+def isMagic(M):
+  n = len(M)
+  mnum = sum(M[0]) 
+  Nd = 0
+  Id = 0
+  for a in range(len(M)): 
+    Hsm = 0
+    Vsm = 0 
+    for x in range(n):
+      Vsm += M[x][a]
+      Hsm = sum(M[a])
+    if Vsm != mnum or Hsm != mnum:
+      return False
+    if sum(M[a]) != mnum:
+      return False
+    Nd = Nd + M[a][a]
+    Id = Id + M[a][n-a-1]
+  if Nd != mnum or Id != mnum:
+    return False
+  print("The magic number for this sqaures is",mnum)
+  return True
+
+def create1(N):
   while True:
-    num = []
     for x in range(N):  
       rand = random.randint(1,x+1)
       if rand in num:
@@ -21,10 +40,9 @@ def create1(N, M1):
       ln.append(num[x])
     M1.append(ln)
   return M1
-
-def create2(N, M2):
+  
+def create2(N):
   while True:
-    mult = []
     for x in range(N):  
       rand = random.randint(0,x+1)
       if rand in mult:
@@ -45,7 +63,7 @@ def create2(N, M2):
     M2.append(ln)
   return M2
 
-def create3(sq1, sq2, M3):
+def create3(sq1, sq2):
   for i in range(len(sq1)):
     arr = []
     for x in range(len(sq2)):
@@ -57,77 +75,45 @@ def create3(sq1, sq2, M3):
 def magic_sum(N):
   return (N * (N**2 + 1)) / 2
 
-def isMagic(M):
-  n = len(M)
-  Nd = 0
-  Id = 0
-  mnum = sum(M[0]) 
-  for a in range(len(M)): 
-    Hsm = 0
-    Vsm = 0 
-    for x in range(n):
-      Vsm += M[x][a]
-      Hsm = sum(M[a])
-    if Vsm != mnum or Hsm != mnum:
-      return False
-    if sum(M[a]) != mnum:
-      return False
-    Nd = Nd + M[a][a]
-    Id = Id + M[a][n-a-1]
-  if Nd != mnum or Id != mnum:
-    return False
-  print("The magic number for this sqaure is",mnum)
-  return True
-  
-# Variiable Dictionary
 usr = input("Please enter a prime number between 5 and 19:") 
+usr = int(usr)
 pri = 0
+num = []
+mult = []
 M1 = []
 M2 = []
 M3 = []
-
-
+  
 # Validating Input
-try:
-    usr = int(usr)
-    if isinstance(usr, int):
-      usr = int(usr)
-except ValueError:
-    print("You did not enter an integer...")
-    exit()
 if 4 < usr < 20:
   for n in range(usr):
     n = n +1
-    if (usr %n) == 0:
+    if (usr%n) == 0:
       pri = pri + 1
   if pri != 2:
     print("That is not a prime number between 5 and 19!")
     exit()
 else: 
-  print("You did not input a number within the range...")
+  print("You did not input a valid input...")
   exit()
 
-# Using the formula to determine magic number/sum
 print("The magic sum using the fromula is:", (magic_sum(usr)))
 yes = input("Would you like to see for yourself? (Yes/No)")
+
 if yes == 'No' or yes == 'no':
   exit()
 
-# Create first magic square
-for x in range(len(create1(usr, M1))):
+for x in range(len(create1(usr))):
   print(M1[x])
 if (isMagic(M1)) == True:
-  print("It is a magic square!\n")
+  print("It is a magic square!")
 
-# Create second magic square
-for x in range(len(create2(usr, M2))):
+for x in range(len(create2(usr))):
   print(M2[x])
 if (isMagic(M2)) == True:
-  print("It is a magic square!\n")
-
-# Create the final magic square
-for x in range(len(create3(M1, M2, M3))):
+  print("It is a magic square!")
+    
+for x in range(len(create3(M1, M2))):
   print(M3[x])
 if (isMagic(M3)) == True:
-  print("It is a magic square!\n")
-
+  print("It is a magic square!")
