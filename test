@@ -75,8 +75,8 @@ def create3(sq1, sq2):
 def magic_sum(N):
   return (N * (N**2 + 1)) / 2
 
+# Variable Dictionary
 usr = input("Please enter a prime number between 5 and 19:") 
-usr = int(usr)
 pri = 0
 num = []
 mult = []
@@ -85,6 +85,13 @@ M2 = []
 M3 = []
   
 # Validating Input
+try:
+    usr = int(usr)
+    if isinstance(usr, int):
+      usr = int(usr)
+except ValueError:
+    print("You did not enter an integer...")
+    exit()
 if 4 < usr < 20:
   for n in range(usr):
     n = n +1
@@ -94,7 +101,7 @@ if 4 < usr < 20:
     print("That is not a prime number between 5 and 19!")
     exit()
 else: 
-  print("You did not input a valid input...")
+  print("You did not enter a number in the given range...")
   exit()
 
 print("The magic sum using the fromula is:", (magic_sum(usr)))
