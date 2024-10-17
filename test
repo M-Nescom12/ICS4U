@@ -98,7 +98,7 @@ if 4 < usr < 20:
     if (usr%n) == 0:
       pri = pri + 1
   if pri != 2:
-    print("That is not a prime number between 5 and 19!")
+    print("That is not a prime number!")
     exit()
 else: 
   print("You did not enter a number in the given range...")
