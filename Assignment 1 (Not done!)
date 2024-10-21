@@ -1,11 +1,24 @@
 """
-Author: 
-Date:
-...
+Title: Assignment 1 - Random Magic Squares
+Author: Muntasir Nathalia 
+Date: Oct 23, 2024
+Course: ICS 4U0
+
 """
 
 """ Imported Libraries """
-import random #
+import random # 
+
+
+""" Global Variable Dictionary """
+usr = input("Please enter a prime number between 5 and 19:") 
+#
+pri = 0 #
+num = [] #
+mult = [] #
+M1 = [] #
+M2 = [] #
+M3 = [] #
 
 
 """ Function 1 """
@@ -107,17 +120,6 @@ def create3(sq1, sq2): #
 #
 def magic_sum(N): #
   return (N * (N**2 + 1)) / 2 #
-
-
-""" Global Variable Dictionary """
-usr = input("Please enter a prime number between 5 and 19:") 
-#
-pri = 0 #
-num = [] #
-mult = [] #
-M1 = [] #
-M2 = [] #
-M3 = [] #
   
   
 """ Taking and Validating Input """
@@ -168,4 +170,3 @@ for x in range(len(create3(M1, M2))): #
   print(M3[x]) #
 if (isMagic(M3)) == True: #
   print("It is a magic square!") #
-  
