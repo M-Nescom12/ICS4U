@@ -7,37 +7,40 @@ Course: ICS 4U0
 """
 
 """ Imported Libraries """
-import random # 
+import random # Importing library 'Random' to randomize matricies
 
 
 """ Global Variable Dictionary """
 usr = input("Please enter a prime number between 5 and 19:") 
-#
-pri = 0 #
-num = [] #
-mult = [] #
-M1 = [] #
-M2 = [] #
-M3 = [] #
+# Intializing variable 'usr' to store users input 
+pri = 0 # Initializing variable with value 0 to call upon in checking if 'usr' is prime
+num = [] # Initializing variable as an array to call upon in Function 2
+mult = [] # Initializing variable as an array to call upon in Function 3
+M1 = [] # Initializing variable as an array to return first matrix 
+M2 = [] # Initializing variable as an array to return second matrix
+M3 = [] # Initializing variable as an array to return third matrix
 
 
 """ Function 1 """
-#
-def isMagic(M): #
+# Function determines weather a sqaure matrix is magic or not
+def isMagic(M): # Defining function 'isMagic' with pirameter 'M' (2D Array) 
 
-# Variable Dictionary for Function isMagic
-  n = len(M) #
-  mnum = sum(M[0]) #
-  Nd = 0 #
-  Id = 0 #
+# Local Variable Dictionary for Function 'isMagic'
+  n = len(M) # Initializing variable as the integer value for length of array 'M'
+  mnum = sum(M[0]) # Initializing variable as the integer value of the sum of All values 
+                   # in the 0th/first row of the 2D Array 'M' 
+  Nd = 0 # Initializing variable with value 0 to check the normal diagonal sum later on
+  Id = 0 # Initializing variable with value 0 to check the inverse diagonal sum later on
   
-# Checking if square is magic 
-  for a in range(len(M)): # looping
-    Hsm = 0 #
-    Vsm = 0 #
-    for x in range(n): #
-      Vsm += M[x][a]  #
+# Checking if square is magic by checking the sums of all rows, columns, and diagnols 
+  for a in range(len(M)): # looping through 'a' which is 0 to 1 less than length of array 'M'
+                          
+    Hsm = 0 # Initialiazing and resetting variable for the sums of rows in 2D array 'M'
+    Vsm = 0 # Initialiazing and resetting variable for the sums of columns in 2D array 'M'
+    for x in range(n): # looping through 'x' which is the range of variable 'n'
+                       # (0 to 1 less than n)
       Hsm = sum(M[a]) #
+      Vsm += M[x][a]  #
     if Vsm != mnum or Hsm != mnum: #
       return False # 
     if sum(M[a]) != mnum: #
@@ -155,7 +158,7 @@ if yes == 'No' or yes == 'no': #
   exit() #
 
 
-""" Outputting Matricies and Their Magic Sum """
+""" Outputting Matricies and Their Magic Sum"""
 for x in range(len(create1(usr))): #
   print(M1[x]) #
 if (isMagic(M1)) == True: #
