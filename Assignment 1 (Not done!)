@@ -155,7 +155,7 @@ if yes == 'No' or yes == 'no': #
   exit() #
 
 
-""" Outputting Matricies and Their Magic Sum"""
+""" Outputting Matricies and Their Magic Sum """
 for x in range(len(create1(usr))): #
   print(M1[x]) #
 if (isMagic(M1)) == True: #
