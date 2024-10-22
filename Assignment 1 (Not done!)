@@ -34,24 +34,22 @@ def isMagic(M): # Defining function 'isMagic' with pirameter 'M' (2D Array)
   
 # Checking if square is magic by checking the sums of all rows, columns, and diagnols 
   for a in range(len(M)): # looping through 'a' which is 0 to 1 less than length of array 'M'
-                          
     Hsm = 0 # Initialiazing and resetting variable for the sums of rows in 2D array 'M'
     Vsm = 0 # Initialiazing and resetting variable for the sums of columns in 2D array 'M'
+    Hsm = sum(M[a]) # Storing the sum of the row 'a' of 2D array 'M' in 'HSM'
     for x in range(n): # looping through 'x' which is the range of variable 'n'
                        # (0 to 1 less than n)
-      Hsm = sum(M[a]) #
-      Vsm += M[x][a]  #
-    if Vsm != mnum or Hsm != mnum: #
-      return False # 
-    if sum(M[a]) != mnum: #
-      return False #
-    Nd = Nd + M[a][a] #
-    Id = Id + M[a][n-a-1] #
-  if Nd != mnum or Id != mnum: #
-    return False #
-  print("The magic number for this sqaures is",mnum) 
-  # 
-  return True #
+      Vsm += M[x][a]  # Storing the sum of the columns by Incrementing 
+                      # (Adding variable value on the right to the left value) in a for loop
+                      # in a for loop to check all columns 
+    if Vsm != mnum or Hsm != mnum: # Checking if all rows and columns do not add to the same sum
+      return False  
+    Nd = Nd + M[a][a] # Storing the sum of the values in the normal diagonal
+    Id = Id + M[a][n-a-1] # Storing the sum of the values in the inverse diagonal
+  if Nd != mnum or Id != mnum: # Checking if the sum of diagonals do not equal 'mnum'
+    return False 
+  print("The magic number for this sqaures is",mnum)  
+  return True # returning true (boolean function) if square is magical
 
 """ Function 2 """
 # 
