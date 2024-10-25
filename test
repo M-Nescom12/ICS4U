@@ -175,3 +175,5 @@ for x in range(len(create3(M1, M2))): #
   print(M3[x]) #
 if (isMagic(M3)) == True: #
   print("It is a magic square!") #
+else: 
+  print("It is not a magic square. T_T") #
