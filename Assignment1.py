@@ -170,7 +170,8 @@ for x in range(len(create2(usr))): # Looping through rows of second matrix 'M2'
   print(M2[x]) # Outputting each row of 'M2'
 if (isMagic(M2)) == True: # Checking if 'M2' is a magic square
   print("It is a magic square!") 
-    
+
+print("\nFinal Square") 
 for x in range(len(create3(M1, M2))): # Looping through rows of third matrix 'M3'
   print(M3[x]) # Outputting each row of 'M3'
 if (isMagic(M3)) == True: # Checking if 'M3' is a magic square
