@@ -84,10 +84,10 @@ def create1(N): # Defining function 'create1' with parameter 'N' (Input from use
 def create2(N): # Defining function 'create2' with parameter 'N' (Input from user)
   arr = [] 
 
-# A while loop to randomly generate an array from 0 to N
+# A while loop to randomly generate an array from 0 to (N-1)
   while True: 
     for x in range(N): 
-      rand = random.randint(0,x+1) # storing a number from 0 to N that is randomized
+      rand = random.randint(0,x) # storing a number from 0 to (N-1) that is randomized
       if rand in mult: # Checking if the number randomly generated is already in the array
          pass 
       else: 
