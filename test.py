@@ -7,11 +7,11 @@ Course: ICS 4U0
 """
 
 """ Imported Libraries """
-import random # Importing library 'Random' to randomize matricies
+import random # Importing library 'Random' to randomize matrices
 
 
 """ Global Variable Dictionary """
-usr = input("Please enter a prime number between 5 and 19:") 
+usr = input("Please enter a prime number between 5 and 19: ") 
 # Intializing variable 'usr' to store users input 
 pri = 0 # Initializing variable with value 0 to call upon in checking if 'usr' is prime
 num = [] # Initializing variable as an array to call upon in Function 2
@@ -22,8 +22,8 @@ M3 = [] # Initializing variable as an array to return third matrix
 
 
 """ Function 1 """
-# Function determines weather a sqaure matrix is magic or not
-def isMagic(M): # Defining function 'isMagic' with pirameter 'M' (2D Array) 
+# Function determines whether a square matrix is magic or not
+def isMagic(M): # Defining function 'isMagic' with parameter 'M' (2D Array) 
 
 # Local Variable Dictionary for Function 'isMagic'
   n = len(M) # Initializing variable as the integer value for length of array 'M'
@@ -32,7 +32,7 @@ def isMagic(M): # Defining function 'isMagic' with pirameter 'M' (2D Array)
   Nd = 0 # Initializing variable with value 0 to check the normal diagonal sum later on
   Id = 0 # Initializing variable with value 0 to check the inverse diagonal sum later on
   
-# Checking if square is magic by checking the sums of all rows, columns, and diagnols 
+# Checking if square is magic by checking the sums of all rows, columns, and diagonals 
   for a in range(len(M)): # looping through 'a' which is 0 to 1 less than length of array 'M'
     Hsm = 0 # Initialiazing and resetting variable for the sums of rows in 2D array 'M'
     Vsm = 0 # Initialiazing and resetting variable for the sums of columns in 2D array 'M'
@@ -48,18 +48,18 @@ def isMagic(M): # Defining function 'isMagic' with pirameter 'M' (2D Array)
     Id = Id + M[a][n-a-1] # Storing the sum of the values in the inverse diagonal
   if Nd != mnum or Id != mnum: # Checking if the sum of diagonals do not equal 'mnum'
     return False 
-  print("The magic number for this sqaures is",mnum)  
+  print("The magic number for this squares is",mnum)  
   return True # returning true (boolean function) if square is magical
 
 """ Function 2 """
 # Function for creating a random magic array using the values 1 to 'usr' 
-def create1(N): # Defining function 'create1' with pirameter 'N' (Input from user)
+def create1(N): # Defining function 'create1' with parameter 'N' (Input from user)
 
-# A loop to randomly generate an array from 1 to N
+# A while loop to randomly generate an array from 1 to N
   while True: 
     for x in range(N): 
       rand = random.randint(1,x+1) # storing a number from 1 to N that is randomized 
-      if rand in num: # Checking if the number randomly generated is in the array
+      if rand in num: # Checking if the number randomly generated is already in the array
          pass 
       else: 
         num.append(rand) # Appending the number stored in 'rand' to array 'num'
@@ -80,100 +80,102 @@ def create1(N): # Defining function 'create1' with pirameter 'N' (Input from use
   return M1 # returning first magic square (array of arrays or 2D array)
 
 """ Function 3 """
-#  
-def create2(N): #
-  arr = [] # 
+# Function for creating a random magic square by multiplying the previous square from 0 to 'usr'
+def create2(N): # Defining function 'create2' with parameter 'N' (Input from user)
+  arr = [] 
 
-#
-  while True: #
-    for x in range(N): #
-      rand = random.randint(0,x+1) #
-      if rand in mult: #
-         pass #
-      else: #
-        mult.append(rand) #
-    if len(mult) == (N): #
-      break #
-   #
+# A while loop to randomly generate an array from 0 to (N-1)
+  while True: 
+    for x in range(N): 
+      rand = random.randint(0,x) # storing a number from 0 to (N-1) that is randomized
+      if rand in mult: # Checking if the number randomly generated is already in the array
+         pass 
+      else: 
+        mult.append(rand) # Appending the number stored in 'rand' to array 'mult'
+    if len(mult) == (N): # breaking loop When the desired length of the array is reached
+      break 
+   
 
-#
-  for i in range(len(mult)): #
-    n = int(mult[i])*N #
-    arr.append(n) #
-  for i in range(N): #
-    ln = [] #
-    for n in range(len(arr)): #
+# Creating the 2nd magic square by multiplying the values in array 'mult' by 'N'
+  for i in range(len(mult)): 
+    n = int(mult[i])*N # Multiplying array 'muly' by 'N'
+    arr.append(n) 
+  for i in range(N): 
+    ln = [] # Initializing and resseting variable for an array for each line in the square
+    for n in range(len(arr)): 
       x = ((n+(N-(3*i)))%N) #
-      ln.append(arr[x]) #
-    M2.append(ln) #
-  return M2 #
+      ln.append(arr[x]) 
+    M2.append(ln) 
+  return M2 # Returning the second magic square (2D array)
 
 """ Function 4 """
-#
-def create3(sq1, sq2): #
+# Function generates a third magic square by adding elements from last 2 matrices 
+def create3(sq1, sq2): # Defining function 'create3' with parameters 'sq1' and 'sq2' (2D arrays)
 
-#
-  for i in range(len(sq1)): #
-    arr = [] #
-    for x in range(len(sq2)): #
-      a = sq1[i][x] + sq2[i][x] #
-      arr.append(a) #
-    M3.append(arr) #
-  return M3 #
+# Looping through each row in 'sq1' to add with 'sq2' 
+  for i in range(len(sq1)): # Loop goes through each row in 'sq1'
+    arr = [] # Initializing array 'arr' to store sum of elements for each row in the new square
+    for x in range(len(sq2)): # # Looping through each column 'x' in 'sq2'(Same size as 'sq1')
+      a = sq1[i][x] + sq2[i][x] # Adding elements at corresponding indicies from 'sq1' and 'sq2'
+      arr.append(a) 
+    M3.append(arr) 
+  return M3 # Returning the third magic square (array of arrays/2D array)
   
 """ Function 5 """
-#
-def magic_sum(N): #
-  return (N * (N**2 + 1)) / 2 #
+# Function calculates the theoretical magic sum for the size matrix determined by user's input
+def magic_sum(N): # Defining function 'magic_sum' with parameter 'N'
+  return int((N * (N**2 + 1)) / 2) # Calculating magic sum formula for 'N' and returning result
   
   
 """ Taking and Validating Input """
-#
-try: #
-    usr = int(usr) #
-    if isinstance(usr, int): #
-      usr = int(usr) #
-except ValueError: #
-    print("You did not enter an integer...") #
-    exit() #
+# Checking if user inputted an integer
+try: 
+    usr = int(usr) # Converting 'usr' to integer to validate
+    if isinstance(usr, int): # Checking if 'usr' is an integer 
+      pass
+except ValueError: # Checking if input is not an integer
+    print("You did not enter an integer...") 
+    exit() 
     
-#
-if 4 < usr < 20: #
-  for n in range(usr): #
-    n = n +1 #
-    if (usr%n) == 0: #
-      pri = pri + 1 #
-  if pri != 2: #
-    print("That is not a prime number!") #
-    exit() #
-else: #
-  print("You did not enter a number in the given range...") #
+# Checking if user inputted a number between 5 to 19 that is prime
+if 4 < usr < 20: # Checking if 'usr' is within range
+  for n in range(usr): # Looping through values 0 to ('usr'-1) to count factors of 'usr'
+    n = n +1 # Starting n from 1 to avoid syntax error (dividing by 0)
+    if (usr%n) == 0: # Checking if 'usr' is divisible by 'n'(factor of 'usr')
+      pri = pri + 1 # Incrementing number of factors counter if 'n' is a facotr 
+  if pri != 2: # If 'usr' has more than two factors, it is not prime
+    print("That is not a prime number!")
+    exit() 
+else: 
+  print("You did not enter a number in the given range...") # Informing user of out-of-range input
   exit() #
 
 
 """ Proving the Formula and Engaging User """
-print("The magic sum using the fromula is:", (magic_sum(usr)))
-#
-yes = input("Would you like to see for yourself? (Yes/No)")
-#
-if yes == 'No' or yes == 'no': #
-  exit() #
+print("The magic sum using the formula is:", (magic_sum(usr)))
+# Outputting theoretical magic sum using the formula by calling on function 'magic_sum'
+yes = input("Would you like to see for yourself? (Yes/No) ")
+# Asking user if they want to generate squares and see the proof 
+if yes == 'No' or yes == 'no': 
+  exit() 
 
 
-""" Outputting Matricies and Their Magic Sum"""
-for x in range(len(create1(usr))): #
-  print(M1[x]) #
-if (isMagic(M1)) == True: #
-  print("It is a magic square!") #
+""" Outputting matrices and Their Magic Sum"""
+for x in create1(usr): # Looping through rows of first matrix 'M1'
+    print(" ".join(f"{num:3}" for num in x)) # Outputting each row of 'M1'
+if (isMagic(M1)) == True: # Checking if 'M1' is a magic square
+  print("It is a magic square!") 
 
-for x in range(len(create2(usr))): #
-  print(M2[x]) #
-if (isMagic(M2)) == True: #
-  print("It is a magic square!") #
-    
-for x in range(len(create3(M1, M2))): #
-  print(M3[x]) #
-if (isMagic(M3)) == True: #
-  print("It is a magic square!") #
+for x in create2(usr): # Looping through rows of second matrix 'M2'
+    print(" ".join(f"{num:3}" for num in x)) # Outputting each row of 'M2'
+if (isMagic(M2)) == True: # Checking if 'M2' is a magic square
+  print("It is a magic square!") 
+
+print("\nFinal Square") 
+for x in create3(M1, M2): # Looping through rows of third matrix 'M3'
+    print(" ".join(f"{num:3}" for num in x)) # Outputting each row of 'M3'
+if (isMagic(M3)) == True: # Checking if 'M3' is a magic square
+  print("It is a magic square!") 
 else: 
-  print("It is not a magic square. T_T") #
+  print("It is not a magic square. T_T") # Output if 'M3' is not magical
+  
