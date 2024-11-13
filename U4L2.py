@@ -29,18 +29,37 @@ for i in range(colors):
   colorData[sym] = color # add a new dictionary entry
 print(colorData)
 
-arr = []
+xmp = []
+
 for x in range (colors+1, rows):
   fl = fh.readline(x)
-  arr.append(fl)
+  gf = modify(fl)
+  xmp.append(gf)
 
-t = turtle
+t = turtle.Turtle()
+turtle.bgcolor("gray40")
+turtle.tracer(0, 0)
+t.hideturtle()
+step = 4
 t.penup()
-t.pendown((-1*cols)//2)
+t.forward((-1*cols)//2)
 t.left(90)
-t.pendown(rows//2)
+t.forward(rows//2)
 t.right(90)
 t.pendown()
+ 
+def writeDot(obj, rad, color):
+    obj.pendown()
+    obj.dot(rad, color)
+    obj.penup()
 
-for 
+for y in range(cols//2):
+    for x in range(len(xmp)):
+        writeDot(t, 4, colorData[xmp[x][y]]) 
+        t.forward(2)
+    t.penup()    
+    t.forward((-1*cols)//2)
+    t.right(90)
+    t.forward(2)
+    t.left(90)
 
