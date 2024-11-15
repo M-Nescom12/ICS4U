@@ -89,3 +89,5 @@ print("The number of columns:", cols)
 print("The number of colors:", colors)
 for color in colorData.values():
   print(color)
+turtle.update()
+fh.close()
