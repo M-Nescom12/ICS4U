@@ -24,6 +24,9 @@ def symbols(ln, file):
     elif c == ' ' and file == "smiley_emoji_mod.xpm":
       mod_string = '\\'
       Rfile.append(mod_string)
+    elif c == ' ' and file == "cool_smiley_mod.xpm":
+      mod_string = '~'
+      Rfile.append(mod_string)
   return Rfile 
 
 def writeDot(obj, rad, color):
@@ -35,6 +38,8 @@ usr = input("Enter 1 for smiley emoji, 2 for cool emoji, and 3 for teapot: ")
 usr = int(usr)
 if usr == 1:
   f = "smiley_emoji_mod.xpm"
+if usr == 2:
+  f = "cool_smiley_mod.xpm"
 if usr == 3:
   f = "teapot_mod.xpm"
   
