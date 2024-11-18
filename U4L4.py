@@ -43,25 +43,31 @@ class Fraction2(Fraction):
       self.setNum(num)
       self.setDen(den)
       
+    def multiply(self, num2, den2):
+      num1 = self.getNum()
+      den1 = self.getDen()
+      self.setNum(num1*num2)
+      self.setDen(den1*den2)
+      
 x = input("Please input a number for the numerator")
 y = input("Please input a number for the denominator")
-try: 
-    x = int(x) 
-    y = int(y)
-    if isinstance(x, int): 
-      pass
-    if isinstance(y, int):
-      pass
-except ValueError: 
-    print("You did not enter an integer...") 
-    exit()
+x = int(x) 
+y = int(y)
 f = Fraction2(x, y)
 f.check() 
 print("Fraction as is: ", f)
-
 unred = input("Enyter a number to multiply fraction: ")
 unred = int(unred)
 f.unreduce(unred)
 print("The unreduced fraction is", f)
 f.reduce()
 print("The simplified fractions is", f)
+n2 = input("Please input a number for the numerator")
+d2 = input("Please input a number for the denominator")
+n2 = int(n2)
+d2 = int(d2)
+f.multiply(n2, d2)
+print("The quotient is", f)
+
+
+
