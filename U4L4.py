@@ -22,24 +22,21 @@ class Fraction2(Fraction):
     def __init__(self, num, den):
       super().__init__(num, den)
     
-    def check(self):
+    def check(self, id):
       if self.getDen() == 0:
-        print("Error: The denominator is zero.")
+        print("Error: The denominator is zero in fraction", id)
         exit()
-            
-    def unreduce(self, multiplier):
-      self.setNum(self.getNum() * multiplier)
-      self.setDen(self.getDen() * multiplier)
         
     def reduce(self):
       num = self.getNum()
       den = self.getDen()
       i = int(num)
-      while i != 1:
-        if (den)%i == 0 and (num)%i == 0:
-          den = den // i
-          num = num // i
-        i = i - 1
+      if num != 0:
+        while i != 1:
+          if (den)%i == 0 and (num)%i == 0:
+            den = den // i
+            num = num // i
+          i = i - 1
       self.setNum(num)
       self.setDen(den)
       
@@ -49,25 +46,44 @@ class Fraction2(Fraction):
       self.setNum(num1*num2)
       self.setDen(den1*den2)
       
+    def unreduce(self, multiplier):
+      self.setNum(self.getNum() * multiplier)
+      self.setDen(self.getDen() * multiplier)  
+      
+    def add_f(self, num2, den2):
+      num1 = self.getNum()
+      den1 = self.getDen()
+      new_num = (num1*den2)+(num2*den1)
+      new_den = den1*den2
+      self.setNum(new_num)
+      self.setDen(new_den)
+
+print("Frist Fraction:")
 x = input("Please input a number for the numerator")
 y = input("Please input a number for the denominator")
 x = int(x) 
 y = int(y)
 f = Fraction2(x, y)
-f.check() 
-print("Fraction as is: ", f)
-unred = input("Enyter a number to multiply fraction: ")
-unred = int(unred)
-f.unreduce(unred)
-print("The unreduced fraction is", f)
+f.check("1") 
+
+print("Second Fraction:")
+n = input("Please input a number for the numerator")
+d = input("Please input a number for the denominator")
+n = int(n)
+d = int(d)
+j = Fraction2(n, d)
+j.check("2") 
+
+print("\n1st Fraction as is: ", f)
 f.reduce()
-print("The simplified fractions is", f)
-n2 = input("Please input a number for the numerator")
-d2 = input("Please input a number for the denominator")
-n2 = int(n2)
-d2 = int(d2)
-f.multiply(n2, d2)
-print("The quotient is", f)
+print("The simplified fractions is: ", f)
+print("\n2nd Fraction as is: ", j)
+j.reduce()
+print("The simplified fractions is: ", j)
 
-
-
+f.add_f(n,d)
+f.reduce()
+print("\nThe sum is: ", f)
+f.multiply(n,d)
+f.reduce()
+print("The quotient is: ", f)
