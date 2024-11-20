@@ -46,6 +46,12 @@ class Fraction2(Fraction):
       self.setNum(num1*num2)
       self.setDen(den1*den2)
       
+    def divide(self, num2, den2):
+      num1 = self.getNum()
+      den1 = self.getDen()
+      self.setNum(num1*den2)
+      self.setDen(den1*num2)
+      
     def unreduce(self, multiplier):
       self.setNum(self.getNum() * multiplier)
       self.setDen(self.getDen() * multiplier)  
@@ -80,10 +86,21 @@ print("The simplified fractions is: ", f)
 print("\n2nd Fraction as is: ", j)
 j.reduce()
 print("The simplified fractions is: ", j)
+i = 0
 
-f.add_f(n,d)
-f.reduce()
-print("\nThe sum is: ", f)
-f.multiply(n,d)
-f.reduce()
-print("The quotient is: ", f)
+while i < 3:
+  f = Fraction2(x, y)
+  if i == 0:
+    f.add_f(n,d)
+    f.reduce()
+    print("\nThe sum is: ", f)
+  if i == 1:
+    f.multiply(n,d)
+    f.reduce()
+    print("The product is: ", f)
+  if i == 2:
+    f.divide(n,d)
+    f.reduce()
+    print("The quotient is: ", f)
+  i = i+1
+    
