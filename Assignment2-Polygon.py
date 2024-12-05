@@ -50,41 +50,40 @@ class Polygon:
         # Use a traversal to generate the entire set of points separated by "->" as string
         # You need to use point's __str__ function to help you.
         pass
-        
+    
 
-
-
-
-
-
-
-
-def getNumeric(S : str):
+def getNumeric(data : str):
     # input: S is a point in the format "(x,y)" (type str)
     # output: a tuple or list indicating a point (x, y) where x, y are int or float
-    x = None
-    y = None # obiviously, change these
-
-    return (x, y)
+    arr = data.split(', ')
+    Point = []
+    for c in arr:
+        p = c.strip("()")
+        [x,y] = p.split(',')
+        try:
+            x = int(x)
+            y = int(y)
+        except ValueError:
+            x = float(x)
+            y = float(y)
+        Point.append([x,y])
+    return Point
+            
 
 fh = open("a2.txt", "r") # this is the name of the data file to open
-
 polydata = fh.readline().strip()
-arr = polydata.split(', ')
-for c in arr:
-    p = c.strip("()")
-    print(p)
-    [x,y] = p.split(',')
-    t = point(x,y)
-    t.valid()
-    
-# make an array of points (str)
+Points = getNumeric(polydata)
+Poly = Polygon()
+for z in range(len(Points)):
+    x = Points[z][0]
+    y = Points[z][1]
+    Poly.add_point(x,y)
 # declare a polygon
 # loop through the points array and turn them into numbers for the polynomial object
     # generate an x, y pair (numerical not str) from getNumeric
     # add to the polynomial (call add_point())
 
-print(Poly) # this should print the entire linked list of points as string
+#print(Poly) # this should print the entire linked list of points as string
         
 
 
