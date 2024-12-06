@@ -53,15 +53,17 @@ class Polygon:
         # Use a traversal to generate the entire set of points separated by "->" as string
         # You need to use point's __str__ function to help you.
         if self.__head is None:
-            return "Empty Polygon"
-        result = []
+            return "No Points"
+        elif self.__verticies == 2:
+            return "Not a Polygon"
+        get = []
         J = self.__head
         while True:
-            result.append(str(J))
+            get.append(str(J))
             J = J.next
             if J == self.__head:
                 break
-        return " -> ".join(result)
+        return " -> ".join(get)
     
 
 def getNumeric(data : str):
@@ -90,12 +92,11 @@ for z in range(len(Points)):
     x = Points[z][0]
     y = Points[z][1]
     Poly.add_point(x,y)
+    
 # declare a polygon
 # loop through the points array and turn them into numbers for the polynomial object
     # generate an x, y pair (numerical not str) from getNumeric
     # add to the polynomial (call add_point())
 
-#print(Poly) # this should print the entire linked list of points as string
+print(Poly) # this should print the entire linked list of points as string
         
-
-
