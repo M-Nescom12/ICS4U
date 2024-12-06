@@ -32,20 +32,20 @@ class Polygon:
         self.__head = None # a null point with a null Next field
 
     def add_point(self, x: float, y: float):
-        # initialize a point object V
-        # if it is the first point, create the object with variable V make head.next point to V
+        # initialize a point obVect V
+        # if it is the first point, create the obVect with variable V make head.next point to V
         # if it is any other point, V.next points to it, and V traverses to that point
         # count the vertices as you go
-        V = point(x, y)
+        h = point(x, y)
         if self.__head is None:
-            self.__head = V
-            V.next = V
+            self.__head = h
+            h.next = h
         else:
-            J = self.__head.next
-            while J.next != self.__head:
-                J = J.next
-            J.next = V
-            V.next = self.__head
+            V = self.__head.next
+            while V.next != self.__head:
+                V = V.next
+            V.next = h
+            h.next = self.__head
         self.__vertices = self.__vertices + 1
        
     
@@ -54,16 +54,16 @@ class Polygon:
         # You need to use point's __str__ function to help you.
         if self.__head is None:
             return "No Points"
-        elif self.__verticies == 2:
+        elif self.__vertices == 2:
             return "Not a Polygon"
-        get = []
-        J = self.__head
+        nodes = []
+        V = self.__head
         while True:
-            get.append(str(J))
-            J = J.next
-            if J == self.__head:
+            nodes.append(str(V))
+            V = V.next
+            if V == self.__head:
                 break
-        return " -> ".join(get)
+        return "->".join(nodes)
     
 
 def getNumeric(data : str):
@@ -86,17 +86,18 @@ def getNumeric(data : str):
 
 fh = open("a2.txt", "r") # this is the name of the data file to open
 polydata = fh.readline().strip()
-Points = getNumeric(polydata)
+cord = getNumeric(polydata)
 Poly = Polygon()
-for z in range(len(Points)):
-    x = Points[z][0]
-    y = Points[z][1]
+for z in range(len(cord)):
+    x = cord[z][0]
+    y = cord[z][1]
     Poly.add_point(x,y)
     
 # declare a polygon
-# loop through the points array and turn them into numbers for the polynomial object
+# loop through the points array and turn them into numbers for the polynomial obVect
     # generate an x, y pair (numerical not str) from getNumeric
     # add to the polynomial (call add_point())
 
 print(Poly) # this should print the entire linked list of points as string
+
         
