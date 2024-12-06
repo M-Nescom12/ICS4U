@@ -14,42 +14,54 @@ class point:
 
         try:
             self.__x = int(self.__x)
-        except:
-            self.__
-            return val
-
+            self.__y = int(self.__y)
+        except ValueError:
+            self.__x = float(self.__x)
+            self.__y = float(self.__y)
+    
     def __str__(self):
         # point (x, y) expressed this way as string
         # as in: (4, 5)
-        pass
-
+        return f"({self.__x}, {self.__y})"
+    
 class Polygon:
     def __init__(self):
         # Set basic properties to default values
         self.__sides = 0
         self.__vertices = 0
-        self.__head = point() # a null point with a null Next field
+        self.__head = None # a null point with a null Next field
 
     def add_point(self, x: float, y: float):
         # initialize a point object V
         # if it is the first point, create the object with variable V make head.next point to V
         # if it is any other point, V.next points to it, and V traverses to that point
         # count the vertices as you go
-        new_point = Node(data)
-        if tail is None:
-            tail = new_point
-            new_point.next = new_point
+        V = point(x, y)
+        if self.__head is None:
+            self.__head = V
+            V.next = V
         else:
-            new_point.next = tail.next
-            tail.next = new_point
-            tail = new_point
-        return tail
-        pass
-
+            J = self.__head.next
+            while J.next != self.__head:
+                J = J.next
+            J.next = V
+            V.next = self.__head
+        self.__vertices = self.__vertices + 1
+       
+    
     def __str__(self):
         # Use a traversal to generate the entire set of points separated by "->" as string
         # You need to use point's __str__ function to help you.
-        pass
+        if self.__head is None:
+            return "Empty Polygon"
+        result = []
+        J = self.__head
+        while True:
+            result.append(str(J))
+            J = J.next
+            if J == self.__head:
+                break
+        return " -> ".join(result)
     
 
 def getNumeric(data : str):
