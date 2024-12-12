@@ -55,6 +55,8 @@ class Polygon:
         self.__vertices = self.__vertices + 1
        
     def draw_polygon(self):
+        turtle.shape("circle")
+        turtle.shapesize(0.01, 0.01)
         turtle.speed(1)
         turtle.penup()
         h = self.__head
