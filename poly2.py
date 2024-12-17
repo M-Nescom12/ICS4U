@@ -51,6 +51,7 @@ class Polygon:
         self.__head = None  # Head node of the circular linked list (type: Point or None)
         self.__side_lens = []
         self.__angles = []
+        self.__nodes = []
 
     def add_point(self, x: float, y: float):
         # PreConditions: Add a new point (x, y) to the polygon as part of a circular linked list.
@@ -121,6 +122,7 @@ class Polygon:
                     
             if vert == self.__head.next.next:
                 self.__angles.append(theta2)
+                
             [x1, y1] = vert.get_coordinates()
             [x2, y2] = vert.next.get_coordinates()
             [x3, y3] = vert.next.next.get_coordinates()
@@ -136,27 +138,48 @@ class Polygon:
                 exit()
         return self.__angles
     
+    def poly_check(self):
+        for i in range(len(self.__angles)):
+            if self.__side_lens[i] != self.__side_lens[i+1] or self.__angles[i] != self.__angles[i+1]:
+                return False
+        return True
+        
+   
     def area(self):
-        check = 0
-        while check != 1:   
-            for i in range((len(self.__side_lens))-1):
-                if self.__side_lens[i] == self.__side_lens[i+1]:
-                    for i in range((len(self.__angles))-1):
-                        if self.__angles[i] == self.__angles[i+1]:
-                            check = 2
-                        else:
-                            check = 1
-                    if i == range((len(self.__side_lens))-2):
-                         break
-                else:
-                    check = 1
-        if check == 2:
-            n = self.__side
+        print(self.__angles, self.__side_lens)
+        sum1 = 0
+        sum2 = 0
+        if self.poly_check() == True:
+            print("Regular")
+            n = self.__sides
             s = self.__side_lens[0]
             Area = (n*((s)**2))/(4*(math.tan((180/n))))
         else:
-            Area = 0
+            print("Irregular")
+            x_points = []
+            y_points = []
+            V = self.__head
+            self.__nodes.append(V)
+            V = V.next # Moving to the next node from the head of the lsit
+            while V != self.__head:
+                self.__nodes.append(V)
+                V = V.next
+            for n in range(len(self.__nodes)):
+                A, B = self.__nodes[n].get_coordinates() 
+                x_points.append(A)
+                y_points.append(B)
+                if n == range(len(self.__nodes)):
+                    A, B = self.__nodes[0].get_coordinates()  
+                    x_points.append(A)
+                    y_points.append(B)
+            for n in range((len(self.__nodes))-1):
+                sum1 += x_points[n] * y_points[n+1]
+                sum2 += x_points[n+1] * y_points[n]
+            Area = sum1-sum2
+            Area = abs(Area/2)
+        
         return Area
+    
     
     def drawPoly(self):
         turtle.shape("circle")
@@ -185,7 +208,7 @@ class Polygon:
         # Variable dictionary:
         # - nodes (list): List of point strings.
         # - V (Point): Traversal pointer to traverse the circular linked list.
-        V = self.__head 
+        V = self.__head
         nodes = str(V)  # Appending the head point to nodes
         V = V.next # Moving to the next node from the head of the lsit
         while V != self.__head:
