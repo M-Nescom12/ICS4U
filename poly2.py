@@ -49,8 +49,6 @@ class Polygon:
         self.__sides = 0  # Number of sides in the polygon (type: int)
         self.__vertices = 0  # Number of vertices in the polygon (type: int)
         self.__head = None  # Head node of the circular linked list (type: Point or None)
-        self.__side_lens = []
-        self.__angles = []
         self.__nodes = []
 
     def add_point(self, x: float, y: float):
@@ -76,24 +74,29 @@ class Polygon:
         self.__vertices = self.__vertices + 1
         if self.__vertices > 1:
             self.__sides = self.__vertices
-            
-    def perimeter(self):
-        Sum = 0
+    
+    def side_len(self):
+        side_len = []
         side = self.__head
         dist = side.distance(side.next)
-        self.__side_lens.append(dist)
+        side_len.append(dist)
         side = side.next
         while side != self.__head:
             dist = side.distance(side.next)
-            self.__side_lens.append(dist)
+            side_len.append(dist)
             side = side.next
-        #print(side_lens)
-        for x in self.__side_lens:
+        return side_len
+    
+    def perimeter(self):
+        side_len = self.side_len()
+        Sum = 0
+        for x in side_len:
             Sum = Sum + x
-        return Sum
+        return round(Sum, 3)
     
     def internal_angle(self):
         vert = self.__head
+        angles = []
         [x1, y1] = vert.get_coordinates()
         [x2, y2] = vert.next.get_coordinates()
         [x3, y3] = vert.next.next.get_coordinates()
@@ -121,7 +124,7 @@ class Polygon:
                     self.__head_angle = 0
                     
             if vert == self.__head.next.next:
-                self.__angles.append(theta2)
+                angles.append(theta2)
                 
             [x1, y1] = vert.get_coordinates()
             [x2, y2] = vert.next.get_coordinates()
@@ -131,36 +134,39 @@ class Polygon:
             
             if mag_sum != 0:
                 theta = (math.acos((dotV/mag_sum)))*(180/math.pi)
-                self.__angles.append(theta)
+                angles.append(theta)
                 vert = vert.next
             else:
                 print("No duplicate points...")
                 exit()
-        return self.__angles
+        return angles
     
     def poly_check(self):
-        for i in range(len(self.__angles)):
-            if self.__side_lens[i] != self.__side_lens[i+1] or self.__angles[i] != self.__angles[i+1]:
+        angles = self.internal_angle()
+        side_len = self.side_len()
+        for i in range((len(angles))-1):
+            if side_len[i] != side_len[i+1] or angles[i] != angles[i+1]:
                 return False
         return True
         
    
     def area(self):
-        print(self.__angles, self.__side_lens)
         sum1 = 0
         sum2 = 0
+        angles = self.internal_angle()
+        side_len = self.side_len()
         if self.poly_check() == True:
             print("Regular")
             n = self.__sides
-            s = self.__side_lens[0]
-            Area = (n*((s)**2))/(4*(math.tan((180/n))))
+            s = side_len[0]
+            Area = (n*((s)**2))/(4*(math.tan(math.pi/n)))
         else:
             print("Irregular")
             x_points = []
             y_points = []
             V = self.__head
             self.__nodes.append(V)
-            V = V.next # Moving to the next node from the head of the lsit
+            V = V.next 
             while V != self.__head:
                 self.__nodes.append(V)
                 V = V.next
@@ -168,20 +174,20 @@ class Polygon:
                 A, B = self.__nodes[n].get_coordinates() 
                 x_points.append(A)
                 y_points.append(B)
-                if n == range(len(self.__nodes)):
+                if n == (len(self.__nodes))-1:
                     A, B = self.__nodes[0].get_coordinates()  
                     x_points.append(A)
                     y_points.append(B)
-            for n in range((len(self.__nodes))-1):
+            for n in range(len(self.__nodes)):
                 sum1 += x_points[n] * y_points[n+1]
                 sum2 += x_points[n+1] * y_points[n]
             Area = sum1-sum2
             Area = abs(Area/2)
-        
-        return Area
+            print(x_points, y_points)
+        return round(Area,3)
     
     
-    def drawPoly(self):
+    def draw(self):
         turtle.shape("circle")
         turtle.shapesize(0.3,0.3)
         turtle.speed(1)
