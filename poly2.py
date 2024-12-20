@@ -28,10 +28,10 @@ class point:
                 exit()
                 
     def distance(self, p2):
-        [x2,y2] = p2.get_coordinates()
+        [x2,y2] = p2.get_cord()
         return (math.sqrt((self.__x - x2)**2 + (self.__y - y2)**2))
     
-    def get_coordinates(self):
+    def get_cord(self):
         # PreConditions and Purpose: Retrieve the x and y coordinates of the Point.
         # PostConditions: Returns a tuple (x, y) as floats.
         return float(self.__x), float(self.__y)
@@ -49,7 +49,6 @@ class Polygon:
         self.__sides = 0  # Number of sides in the polygon (type: int)
         self.__vertices = 0  # Number of vertices in the polygon (type: int)
         self.__head = None  # Head node of the circular linked list (type: Point or None)
-        self.__nodes = []
 
     def add_point(self, x: float, y: float):
         # PreConditions: Add a new point (x, y) to the polygon as part of a circular linked list.
@@ -74,6 +73,16 @@ class Polygon:
         self.__vertices = self.__vertices + 1
         if self.__vertices > 1:
             self.__sides = self.__vertices
+            
+    def nodes(self):
+        V = self.__head
+        nodes = []
+        nodes.append(V)
+        V = V.next 
+        while V != self.__head:
+            nodes.append(V)
+            V = V.next
+        return nodes
     
     def side_len(self):
         side_len = []
@@ -87,19 +96,27 @@ class Polygon:
             side = side.next
         return side_len
     
-    def perimeter(self):
-        side_len = self.side_len()
-        Sum = 0
-        for x in side_len:
-            Sum = Sum + x
-        return round(Sum, 3)
+    def is_poly(self):
+        check = self.nodes()
+        if len(check) < 3:
+            print("Not enough points found...")
+            return exit()
+        for p1 in check:
+            tally = 0
+            for p2 in check:
+                if p1 == p2:
+                    tally += 1
+                    if tally == 2:
+                        print("No duplicate points")
+                        return exit()
     
     def internal_angle(self):
+        self.is_poly()
         vert = self.__head
         angles = []
-        [x1, y1] = vert.get_coordinates()
-        [x2, y2] = vert.next.get_coordinates()
-        [x3, y3] = vert.next.next.get_coordinates()
+        [x1, y1] = vert.get_cord()
+        [x2, y2] = vert.next.get_cord()
+        [x3, y3] = vert.next.next.get_cord()
         dotV = float((x1-x2)*(x3-x2)) + ((y1-y2)*(y3-y2))
         
         mag_sum = abs(math.sqrt(((x1 - x2)**2) + ((y1 - y2)**2)))*(math.sqrt(((x3 - x2)**2) + ((y3 - y2)**2)))
@@ -111,8 +128,8 @@ class Polygon:
             exit()
         while vert != self.__head:
             if vert.next == self.__head:
-                [x2, y2] = vert.next.get_coordinates()
-                [x3, y3] = vert.next.next.get_coordinates()
+                [x2, y2] = vert.next.get_cord()
+                [x3, y3] = vert.next.next.get_cord()
                 dotV = float(( (x2-1) - x2)*(x3 - x2)) + ((y2-y2)*(y3-y2))
                 
                 mag_sum = abs(math.sqrt((( (x2-1) - x2)**2) + ((y2 - y2)**2)))*(math.sqrt(((x3 - x2)**2) + ((y3 - y2)**2)))
@@ -126,9 +143,9 @@ class Polygon:
             if vert == self.__head.next.next:
                 angles.append(theta2)
                 
-            [x1, y1] = vert.get_coordinates()
-            [x2, y2] = vert.next.get_coordinates()
-            [x3, y3] = vert.next.next.get_coordinates()
+            [x1, y1] = vert.get_cord()
+            [x2, y2] = vert.next.get_cord()
+            [x3, y3] = vert.next.next.get_cord()
             dotV = float((x1-x2)*(x3-x2)) + ((y1-y2)*(y3-y2))  
             mag_sum = abs(math.sqrt(((x1 - x2)**2) + ((y1 - y2)**2)))*(math.sqrt(((x3 - x2)**2) + ((y3 - y2)**2)))
             
@@ -142,15 +159,26 @@ class Polygon:
         return angles
     
     def poly_check(self):
+        self.is_poly()
         angles = self.internal_angle()
         side_len = self.side_len()
         for i in range((len(angles))-1):
-            if side_len[i] != side_len[i+1] or angles[i] != angles[i+1]:
+            if round(side_len[i]) != round(side_len[i+1]) or round(angles[i]) != round(angles[i+1]):
                 return False
         return True
-        
-   
+    
+    def perimeter(self):
+        self.is_poly()
+        side_len = self.side_len()
+        if self.poly_check() == True:
+            Sum = side_len[0]*self.__sides
+        else:
+            Sum = 0
+            for x in side_len:
+                Sum = Sum + x
+        return round(Sum, 3)  
     def area(self):
+        self.is_poly()
         sum1 = 0
         sum2 = 0
         angles = self.internal_angle()
@@ -164,52 +192,46 @@ class Polygon:
             print("Irregular")
             x_points = []
             y_points = []
-            V = self.__head
-            self.__nodes.append(V)
-            V = V.next 
-            while V != self.__head:
-                self.__nodes.append(V)
-                V = V.next
-            for n in range(len(self.__nodes)):
-                A, B = self.__nodes[n].get_coordinates() 
+            nodes = self.nodes()
+            for n in range(len(nodes)):
+                A, B = nodes[n].get_cord() 
                 x_points.append(A)
                 y_points.append(B)
-                if n == (len(self.__nodes))-1:
-                    A, B = self.__nodes[0].get_coordinates()  
+                if n == (len(nodes))-1:
+                    A, B = nodes[0].get_cord()  
                     x_points.append(A)
                     y_points.append(B)
-            for n in range(len(self.__nodes)):
+            for n in range(len(nodes)):
                 sum1 += x_points[n] * y_points[n+1]
                 sum2 += x_points[n+1] * y_points[n]
             Area = sum1-sum2
             Area = abs(Area/2)
-            print(x_points, y_points)
         return round(Area,3)
     
     
     def draw(self):
+        self.is_poly()
         turtle.shape("circle")
         turtle.shapesize(0.3,0.3)
         turtle.speed(1)
         turtle.penup()
         V = self.__head
-        [x, y] = V.get_coordinates()
+        [x, y] = V.get_cord()
         turtle.setpos(x, y)
         turtle.pendown()
         V = V.next
         while  V != self.__head:
-            [x0, y0] = V.get_coordinates()
+            [x0, y0] = V.get_cord()
             turtle.goto(x0, y0)
             V = V.next
-        [x0, y0] = V.get_coordinates()
+        [x0, y0] = V.get_cord()
         turtle.goto(x0, y0)
         turtle.done()
         
     def __str__(self):
         # PreConditions: Generate a string representation of the polygon as a series of points.
         # PostConditions: Returns the circular linked list of points in the format "(x, y) -> (x, y) -> ...".
-        if self.__vertices < 3: # Checking if there are enough points to be a polygon
-            return "Not enough coordinates found"
+        self.is_poly() # Checking if there are enough points to be a polygon
         
         # Variable dictionary:
         # - nodes (list): List of point strings.
