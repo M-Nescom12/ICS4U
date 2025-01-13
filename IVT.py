@@ -7,20 +7,46 @@ class Polynomial:
     def polycraft(self):
         i = 0
         for c in self.__func:
-            if self.__len-1 == i:
-                self.__EQ = self.__EQ + str(c)
-                print(c)
-            elif (self.__len -2) == i:
-                piece = str(c) + 'x' 
-                self.__EQ = self.__EQ + piece
-                print(c)
+            if i == 0 and c < 0:
+                c = c *-1
+                self.__EQ = self.__EQ + "-"
+            elif c < 0:
+                c = c*-1
+                
+            if c == 0:
+                pass
+
+            elif c == 1:
+                if self.__len-1 == i:
+                    self.__EQ = self.__EQ + str(c)
+                elif (self.__len -2) == i:
+                    self.__EQ = self.__EQ + 'x'
+                else:
+                    piece = "x^" + str(self.__len -i-1) 
+                    self.__EQ = self.__EQ + piece
             else:
-                piece = str(c) + "x^" + str(self.__len -i-1) 
-                self.__EQ = self.__EQ + piece
-                print(c)
+                if self.__len-1 == i:
+                    self.__EQ = self.__EQ + str(c)
+                elif (self.__len -2) == i:
+                    piece = str(c) + 'x' 
+                    self.__EQ = self.__EQ + piece
+                else:
+                    piece = str(c) + "x^" + str(self.__len -i-1) 
+                    self.__EQ = self.__EQ + piece
+                    
+            if i > self.__len-2:
+                pass
+            elif self.__func[i+1] < 0 and c != 0:
+                self.__EQ = self.__EQ + " - "
+            elif self.__func[i+1] > 0 and c != 0:
+                self.__EQ = self.__EQ + " + "
+
             i += 1
-        print(self.__EQ)
-        
+        return self.__EQ
+    
+    def polysolver(self):
+        pass
+
 from Polynomial import *
 func = []
 Funky = [-2,5,-3,-1]
@@ -46,4 +72,4 @@ for c in floaty:
         exit()
 print(func)
 test = Polynomial(func)
-test.polycraft()
+print(test.polycraft())
