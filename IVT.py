@@ -10,7 +10,10 @@ class Polynomial:
             if i == 0 and c < 0:
                 c = c *-1
                 self.__EQ = self.__EQ + "-"
-            elif c < 0:
+            elif 0 < i < self.__len and c > 0 and self.__EQ != "":
+                self.__EQ = self.__EQ + " + "
+            elif 0 < i < self.__len and c < 0 and self.__EQ != "": 
+                self.__EQ = self.__EQ + " - "
                 c = c*-1
                 
             if c == 0:
@@ -33,14 +36,6 @@ class Polynomial:
                 else:
                     piece = str(c) + "x^" + str(self.__len -i-1) 
                     self.__EQ = self.__EQ + piece
-                    
-            if i > self.__len-2:
-                pass
-            elif self.__func[i+1] < 0 and c != 0:
-                self.__EQ = self.__EQ + " - "
-            elif self.__func[i+1] > 0 and c != 0:
-                self.__EQ = self.__EQ + " + "
-
             i += 1
         return self.__EQ
     
