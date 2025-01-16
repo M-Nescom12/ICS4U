@@ -1,3 +1,4 @@
+
 import math
 
 class Polynomial:
@@ -5,7 +6,6 @@ class Polynomial:
         self.__func = func
         self.__len = len(func)
         self.__EQ = ""
-        self.__derive = []
        
     def craft(self):
         i = 0
@@ -91,16 +91,16 @@ class Polynomial:
             i += 1
         return y
    
-    def x(self, y, x1, x2): 
-        valid = 0.001    
+    def newton(self, x1, x2):
+        valid = 0.0001    
         test = 0
         r = None
-        der = self.derivative(self.__func)
+        der = self.derivative()
         
         while test < x2:
-            fx = self.solve(x1, y)
+            fx = self.solve(x1, 0)
             fx_pr = self.derive(der, x1)  
-
+            
             if fx_pr == 0:
                 print("Math Error")
                 break
@@ -114,7 +114,18 @@ class Polynomial:
             test += 1
         return r
 
-   
+    def brute(self, x1, x2):
+        First = self.f(x1)
+        Second = self.f(x2)
+        Avg = (x1+x2)/2
+        while round(self.f(Avg), 5) != 0:
+            if self.f(Avg) > 0:
+                self.brute(x1, Avg)
+
+            elif self.f(Avg) < 0:
+                self.brute(Avg, x2)
+        return Avg
+    
     def findZero(self, _x1, _x2):
         deg = self.get_order()
         
@@ -152,17 +163,20 @@ class Polynomial:
             else:
                 return "No root found..."
             
-        elif deg > 0:
-            der = self.derivative(self.__func)
-
+        elif deg > 2:
+            Z = self.newton(x1, x2)
+            if Z == None:
+                return self.brute(x1, x2)
+            return Z
             
              
     def __str__(self):
         return f"{self.__EQ}"
 
-#from Polynomial import *
+
+from Polynomial import *
 func = []
-Funky = [-2,5,-3,-1]
+Funky = [-2,5,-3,1]
 usr = input("Enter all coeffecients wihtout proceeding 0s: ")
 usr = str(usr)
 x1 = input("Please input a point before the root in the function: ")
@@ -173,7 +187,7 @@ try:
 except ValueError:
     print("Enter a value for x1, and x2")
     exit()
-    
+   
 digits = usr.strip("()[]{}+")
 floaty = digits.split(',')
 
@@ -185,10 +199,6 @@ for c in floaty:
         exit()
 
 test = Polynomial(func)
-test.craft()
-
-print("Equation: ", test)
-print("Derivative: ", test.derivative())
+print(test.craft())
 print("Find y: ", test.f(0))
-print("Find 0: ", test.findZero(x1,x2))
-
+print("Find x: ", test.findZero(x1,x2))
