@@ -187,17 +187,41 @@ class Polynomial:
                 print(r3)
                 
                 # Recursion tomorrow for all possible zeroes
-                xb1 = r1 - 0.1
-                xb2 = r1 + 0.1
-                xb3 = r2 - 0.1
-                xb4 = r2 + 0.1
-                xb5 = r3 - 0.1
-                xb6 = r3 + 0.1
-                print(self.brute(x1, xb1)) # Before 1st
-                print(self.brute(x1, xb5)) # Between 1s and 2nd
-                print(self.brute(xb4, x2)) # After last
-                print(self.brute(xb6, xb3)) # Between 2nd and 3rd
-              
+            xb1 = r1 - 0.1
+            xb2 = r1 + 0.1
+                
+            xb3 = r2 - 0.1
+            xb4 = r2 + 0.1
+        
+            for n in range(int(xb2), int(xb3)):
+                print(1, xb3, xb2)
+                ch = self.brute(xb2,xb3)
+                if self.brute(xb2,xb3) == None:
+                    xb3 = xb3-1
+                else:
+                    print(ch)
+            
+            while (self.brute(x1, xb1) != None) or (self.brute(xb2, xb3) != None) or (self.brute(xb4, x2) != None):
+                print(1)
+                z = []
+                if self.brute(x1, xb1) != None:
+                    z.append(self.brute(x1, xb1)) # Before 1st
+                    x1 = z[0] + 0.1
+                        
+                elif self.brute(xb2, ab3) != None:
+                    z.append(self.brute(xb2, xb3)) # Between 1s and 2nd
+                    xb2 = z[0] + 0.1
+                        
+                elif self.brute(xb4, x2) != None:
+                    z.append(self.brute(xb4, x2)) # After last
+                    xb4 = z[0] + 0.1
+                        
+                elif z == []:
+                    print("Nope!")
+                    break
+                print(z)
+                    
+                    
             # One zero only
             z1 = self.newton(x1)
             if z1 is None or abs(self.f(z1)) > 1e-5:  
@@ -221,7 +245,6 @@ class Polynomial:
             
     def __str__(self):
         return f"{self.__eq}"
- 
  
 #from Polynomial import *
 func = []
