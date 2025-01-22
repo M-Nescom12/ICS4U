@@ -1,327 +1,301 @@
 import math
-
-class Polynomial:
-    def __init__(self, func):
-        self.__func = func
-        self.__len = len(func)
-        self.__Eq = ""
-    
-    def craft(self):
-        i = 0
-        for c in self.__func:
-           
-            if i == 0 and c < 0:
-                c = c *-1
-                self.__Eq = self.__Eq + "-"
-            elif 0 < i < self.__len and c > 0 and self.__Eq != "":
-                self.__Eq = self.__Eq + " + "
-            elif 0 < i < self.__len and c < 0 and self.__Eq != "":
-                self.__Eq = self.__Eq + " - "
-                c = c*-1
-                 
-            if c == 0:
-                pass
-
-            elif c == 1:
-                if self.__len-1 == i:
-                    self.__Eq = self.__Eq + str(c)
-                elif (self.__len -2) == i:
-                    self.__Eq = self.__Eq + 'x'
-                else:
-                    piece = "x^" + str(self.__len -i-1)
-                    self.__Eq = self.__Eq + piece
-            else:
-                if self.__len-1 == i:
-                    self.__Eq = self.__Eq + str(c)
-                elif (self.__len -2) == i:
-                    piece = str(c) + 'x'
-                    self.__Eq = self.__Eq + piece
-                else:
-                    piece = str(c) + "x^" + str(self.__len -i-1)
-                    self.__Eq = self.__Eq + piece
-           
-            i += 1
-        return self.__Eq
-   
-    def get_order(self):
-        i = 0  
-        while i < self.__len:
-            if self.__func[i] != 0:  
-                return self.__len - i - 1
-            i += 1
-        return -1
-   
-    def f(self, x: float):
-        i = 0
-        y = 0.0
-        for c in self.__func:
-            if i == self.__len-1:
-                y = y + c
-            elif i == self.__len-2:
-                y = x*c + y
-            else:
-                y = x**(self.__len-(i+1))*c+y
-            i += 1
-        return y
-            
-    def __str__(self):
-        return f"{self.__Eq}"
-import math
 from Polynomial import *
 
 class IVT:
     def __init__(self, func):
+        """
+        Pre-conditions:
+        - `func` is a list of coefficients representing a polynomial, ordered from the highest to lowest degree.
+
+        Post-conditions:
+        - Initializes the IVT object with the polynomial function, its length, and a Polynomial object.
+
+        Variable Dictionary:
+        - func (list[float]): Coefficients of the polynomial.
+        - self.__func (list[float]): Encapsulated version of `func`.
+        - self.__len (int): Length of the function (number of coefficients).
+        - self.__Poly (Polynomial): Polynomial object to leverage existing methods.
+        """
         self.__func = func
         self.__len = len(func)
         self.__Poly = Polynomial(func)
-        
+       
     def solve(self, x: float, y: float):
+        """
+        Pre-conditions:
+        - `x` is a float representing the input to the polynomial.
+        - `y` is a float to compare the polynomial evaluation against.
+
+        Post-conditions:
+        - Returns the difference between the polynomial evaluated at `x` and `y`.
+
+        Variable Dictionary:
+        - i (int): Index for iterating over coefficients.
+        - exp (int): Exponent of the current term.
+        - val (float): Accumulated value of the polynomial evaluation.
+        """
         i = 0
         val = 0.0
+
+        # Solving the function with both y and x
         while i < self.__len:
             exp = self.__len - i - 1
-            val = val + self.__func[i] * (x**exp)
+            val += self.__func[i] * (x ** exp)
             i += 1
         return val - y
-    
+   
     def derivative(self):
+        """
+        Pre-conditions:
+        - None (uses `self.__func`).
+
+        Post-conditions:
+        - Returns a list of coefficients representing the derivative of the polynomial.
+
+        Variable Dictionary:
+        - derive (list[float]): Coefficients of the derivative.
+        - i (int): Index for iterating over coefficients.
+        - exp (int): Exponent of the current term.
+        """
         derive = []
         i = 0
+        # Takes the derivative of the polynomial and stores it in an array and retunrs it 
         while i < self.__len:
             exp = self.__len - i - 1
             if exp > 0 and self.__func[i] != 0:
-                derive.append(self.__func[i]*exp)
+                derive.append(self.__func[i] * exp)
             i += 1
         return derive
    
     def derive(self, der, x: float):
+        """
+        Pre-conditions:
+        - `der` is a list of derivative coefficients.
+        - `x` is the point at which the derivative is evaluated.
+
+        Post-conditions:
+        - Returns the derivative evaluated at `x`.
+
+        Variable Dictionary:
+        - val (float): Accumulated value of the derivative evaluation.
+        - i (int): Index for iterating over `der`.
+        - exp (int): Exponent of the current term.
+        """
         val = 0.0
+        # Solving F(x) (Derivative)
         for i in range(len(der)):
             exp = len(der) - i - 1
-            val = val + der[i] * (x**exp)
+            val += der[i] * (x ** exp)
         return val
-    
+   
     def newton(self, x1: float):
+        """
+        Pre-conditions:
+        - `x1` is the initial guess for the root.
+
+        Post-conditions:
+        - Returns the root found using Newton's method, or None if it fails.
+
+        Variable Dictionary:
+        - valid (float): Threshold for convergence.
+        - max (int): Maximum iterations.
+        - test (int): Counter for iterations (unused).
+        - der (list[float]): Coefficients of the derivative.
+        - fx (float): Value of the polynomial at `x1`.
+        - fx_pr (float): Value of the derivative at `x1`.
+        - new_x (float): Updated value of the root estimate.
+        """
         valid = 1e-10
         max = 100
         test = 0
         der = self.derivative()
 
+        # Doing Newton's method in a loop for 100 iterations
         for __ in range(max):
-            fx = self.solve(x1, 0)
-            fx_pr = self.derive(der, x1)
+            fx = self.solve(x1, 0) # solving f(x)
+            fx_pr = self.derive(der, x1) # Solving F(x1)
 
-            if fx_pr == 0:  #Failsafe
+            if fx_pr == 0:  # Failsafe for division by zero.
                 return None
-            
-            if __ == max - 1: #Did not converge
+           
+            if __ == max - 1:  # Did not converge.
                 return None
-            
-            new_x = x1 - fx / fx_pr
-            if abs(new_x - x1) < valid:
+           
+            new_x = x1 - fx / fx_pr # Determining new x based on y or y'
+            if abs(new_x - x1) < valid:  # Convergence check.
                 return new_x
-            x1 = new_x
+            x1 = new_x # Setting x1 to new_x
         return None
 
     def brute(self, x1: float, x2: float):
-        valid = 1e-5  
-        f_x1 = self.__Poly.f(x1)
+        """
+        Pre-conditions:
+        - `x1` and `x2` define the interval within which a root is sought.
+
+        Post-conditions:
+        - Returns the root found using the bisection method, or None if no root exists.
+
+        Variable Dictionary:
+        - valid (float): Threshold for convergence.
+        - f_x1 (float): Value of the polynomial at `x1`.
+        - f_x2 (float): Value of the polynomial at `x2`.
+        - avg (float): Midpoint of the current interval.
+        - f_z (float): Value of the polynomial at `avg`.
+        """
+        valid = 1e-5   
+        f_x1 = self.__Poly.f(x1) 
         f_x2 = self.__Poly.f(x2)
-        
+       
         if f_x1 * f_x2 > 0:
-            return None
+            return None  # No root if f(x1) and f(x2) have the same sign.
 
-        while abs(x2 - x1) > valid:
-            avg = (x1 + x2) / 2
-            f_z = self.__Poly.f(avg)
+        # Loop to determine when f(x) = 0 using IVT
+        while abs(x2 - x1) > valid: 
+            avg = (x1 + x2) / 2 
+            f_z = self.__Poly.f(avg) 
 
+            # If root found that is sufficient for tolerence, return it
             if abs(f_z) < valid:
                 return avg
+            # Check if zero is closer to x1 so x2 will change to x average
             elif f_x1 * f_z < 0:  
                 x2 = avg
                 f_x2 = f_z
+            # The zero is closer to x2 so x1 will change to x average
             else:  
                 x1 = avg
                 f_x1 = f_z
 
-        return None  
+        return None
 
-            
     def findZero(self, _x1: float, _x2: float):
+        """
+        Pre-conditions:
+        - _x1 and _x2 must be floating-point numbers.
+        - _x1 and _x2 must not be equal.
+        
+        Post-conditions:
+        - Returns the roots of the polynomial within the range [_x1, _x2], if any exist.
+        - Returns a sorted list of unique roots if multiple roots exist.
+        - Returns a message if no roots exist in the given range.
+        """
+
+        # Variable Dictionary:
+        # _x1, _x2: float - The bounds within which to search for roots.
+        # x1, x2: float - Adjusted bounds ensuring x1 < x2.
+        # z1: float or None - Root found using the brute-force method.
+        # z2, z3: float or None - Roots found using Newton's method at bounds x1 and x2.
+        # deg: int - Degree of the polynomial.
+        # roots: list - List of unique roots found within the range.
+
+        # Ensure _x1 < _x2 for consistency
         if _x1 == _x2:
-            return("The x values must be different")
+            return "The x values must be different"
         elif _x1 > _x2:
             x1 = _x2
             x2 = _x1
         else:
             x1 = _x1
             x2 = _x2
-            
-        z1 = self.brute(x1, x2)  
-        z2 = self.newton(x1)
-        z3 = self.newton(x2)
-        deg = self.__Poly.get_order()
-        roots = []
-        
+
+        # Attempt to find roots using different methods
+        z1 = self.brute(x1, x2)  # Brute-force search for a root
+        z2 = self.newton(x1)     # Newton's method starting from x1
+        z3 = self.newton(x2)     # Newton's method starting from x2
+        deg = self.__Poly.get_order()  # Degree of the polynomial
+        roots = []  # List to store found roots
+
+        # If no roots are found using any method, return message
         if z1 is None and z2 is None and z3 is None:
-            return "No roots between given x values"
-        
-        elif round(z2, 9) == round(z3, 9):
-            if x1-0.1 < z2 < x2+0.1 and x1 - 0.1 < z3 < x2 + 0.1:
-                return z2
-        
-        elif deg == 2:
-            if x1-0.1 < z2 < x2+0.1 and x1 - 0.1 < z3 < x2 + 0.1:
-                return z2, z3
-            
-            elif x1-0.1 < z2 < x3 +0.1:
-                return z2
-            
-            elif x1 - 0.1 < z3 < x2 + 0.1:
-                return z3
-            
+            return "No roots between given values"
+        # checking if linear
+        elif deg < 2: 
+            if z1 is not None: #if there is a root return it
+                return z1
             else:
-                return "No root between given x values"
-        
+                return "No roots between given x values"
+        # If Newton's method converges to the same root for both bounds, return that root
+        elif round(z2, 9) == round(z3, 9): 
+            if x1-0.1 < z2 < x2+0.1 and x1-0.1 < z3 < x2+0.1:
+                return z2
+        # For polynomials of degree less than 3, return z2 and z3 directly
+        elif deg == 2: # for quadratic
+            if x1-0.1 < z2 < x2+0.1 and x1-0.1 < z3 < x2+0.1: # check if the 2 roots are within the range
+                return z2, z3
+            elif x1-0.1 < z2 < x2+0.1: # check first root individually
+                return z2
+            elif x1-0.1 < z3 < x2+0.1: # check second root individually
+                return z3
+            else: # if both fail then no root is between the x-values
+                return "no root given between x values"
+                
+        # For higher-degree polynomials, find and return all unique roots
         else:
-            roots.append(z2) #Root closest to negative infinity
-            roots.append(z3) #Root closest to positive infinity
+            roots.append(z2)  # Root closest to negative infinity
+            roots.append(z3)  # Root closest to positive infinity
+            
             i = 0
-            while i < deg-2:
-                low = 1/(deg-1)
-                high = 1-low
-                z = self.newton((z2 * high + z3 * low)) #Finds a zero thats not already found
+            while i < deg - 2:  # Continue finding additional roots
+                # Using a ratio specific to the polynomial type.
+                # Ex. if the order is 4, the most roots is 4 so the ratio would be set accordingly
+                low = 1 / (deg - 1) 
+                high = 1 - low
+                z = self.newton((z2 * high + z3 * low))  # Test a point closer to z2 using test ratio
+
+                # Check if the found root z is already in roots
                 f = 0
                 for r in roots:
-                    if z is None or r is None:
+                    if z is None or r is None: # if a root isn't found then pass
                         pass
-                    elif round(r, 5) == round(z, 5):
+                    elif round(r, 5) == round(z, 5): # otherwise check if the root has already been found
                         f = 1
-                if f != 1 and z is not None:
+
+                # Add z if it is a new root
+                if f != 1 and z is not None: # if a new zero is found append it
                     roots.append(z)
                     z2 = z
-                    
+
                 else:
-                    z = self.newton((z2 * 0.7 + z3 * 0.3)) #Finds a zero thats not already found in middle
+                    # Try different combinations to find a new root
+                    z = self.newton((z2 * 0.7 + z3 * 0.3))  # Test a point between already found zeroes closer to z2
                     f = 0
                     for r in roots:
-                        if z is None or r is None:
+                        if z is None or r is None: # if a root isn't found then pass
                             pass
-                        elif round(r, 5) == round(z, 5):
+                        elif round(r, 5) == round(z, 5): # otherwise check if the root has already been found
                             f = 1
-                    if f != 1 and z is not None:
-                        roots.append(z)
-                        z2 = z        
+
+                    if f != 1 and z is not None: # if a new zero is found append it
+                        roots.append(z) 
+                        z2 = z
                     else:
-                        z = self.newton(((z2+z3) / 2)) #Finds a zero thats not already found closer to z3
+                        z = self.newton((z2 + z3) / 2)  # Midpoint of z2 and z3
                         f = 0
                         for r in roots:
-                            if z is None or r is None:
+                            if z is None or r is None: # if a root isn't found then pass
                                 pass
-                            elif round(r, 5) == round(z, 5):
+                            elif round(r, 5) == round(z, 5): # otherwise check if the root has already been found
                                 f = 1
-                        if f != 1 and z is not None:
+
+                        if f != 1 and z is not None: # if a new zero is found append it
                             roots.append(z)
                             z2 = z
-                                            
                         else:
-                            z = self.brute((z2 + 1e-4), (z3 - 1e-4)) #Brute only works if odd zeroes in between z2 and z3
-                            if z != None:
+                            # As a last resort, use brute-force to find a root in a small interval
+                            # Will fail if there are even number of roots in between 
+                            z = self.brute((z2 + 1e-4), (z3 - 1e-4))
+                            if z is not None:
                                 roots.append(z)
                                 z2 = z
                 i += 1
-            roots.sort()
-            for c in range(len(roots)):
-                if x1 > roots[c] > x2:
-                    roots.pop(c)
-                    
-            if roots == []:
-                return "No root between given x values"
-            return roots
-          from IVT import *
-from Polynomial import *
-
-func = []
-# funky = [-2,5,-3,0] or [1, -21, 175, -735, 1624, -1764, 720, 0] or [1,-10,35,-50,24 // ,0]
-usr = input("Enter all coeffecients seperated by commas: ")
-usr = str(usr)
-
-digits = usr.strip("()[]{}+")
-floaty = digits.split(',')
-
-for c in floaty:
-    try:
-        func.append(float(c))
-    except ValueError:
-        print(c)
-        print("Please enter NUMBERS seperated by commas...")
-        exit()
-
-Poly = Polynomial(func)
-Poly.craft()
-print(Poly)
-
-x1 = input("Please input a point before the root in the function: ")
-x2 = input("Please input a point after the root in the function: ")
-try:
-    x1 = float(x1)
-    x2 = float(x2)
-except ValueError:
-    print("Enter a value for x1, and x2")
-    exit()
-
-Zero = IVT(func)
-print(Zero.findZero(x1, x2))
-from IVT import *
-from Polynomial import *
-
-func = []
-# funky = [-2,5,-3,0] or [1, -21, 175, -735, 1624, -1764, 720, 0] or [1,-10,35,-50,24 // ,0]
-usr = input("Enter all coeffecients seperated by commas: ")
-usr = str(usr)
-
-digits = usr.strip("()[]{}+")
-floaty = digits.split(',')
-
-for c in floaty:
-    try:
-        func.append(float(c))
-    except ValueError:
-        print(c)
-        print("Please enter NUMBERS seperated by commas...")
-        exit()
-
-Poly = Polynomial(func)
-Poly.craft()
-print(Poly)
-
-x1 = input("Please input a point before the root in the function: ")
-x2 = input("Please input a point after the root in the function: ")
-try:
-    x1 = float(x1)
-    x2 = float(x2)
-except ValueError:
-    print("Enter a value for x1, and x2")
-    exit()
-
-Zero = IVT(func)
-print(Zero.findZero(x1, x2))
-
-from Polynomial import *
-func = []
-usr = input("Enter all coeffecients wihtout proceeding 0s: ")
-usr = str(usr)
-digits = usr.strip("()[]{}+")
-floaty = digits.split(',')
-
-for c in floaty:
-    try:
-        func.append(float(c))
-    except ValueError:
-        print("Please enter NUMBERS seperated by commas...")
-        exit()
-
-test = Polynomial(func)
-test.craft()
-print(test)
-
+    
+            roots.sort()  # Sort the roots for consistency
+            zeroes = []
+            for c in roots:
+                if x2 < c or c < x1: # if a root not within the range provided is found ignore it
+                    pass
+                else:
+                    zeroes.append(c) # otherwise append it to zeroes
+            if zeroes == []:
+                return "No roots in given x range" # if there are no zeroes let the user know
+            return zeroes # otherwise return zeroes
